@@ -1,0 +1,71 @@
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+- name: RG
+  value: Feb19-Demo
+- name: DB-HOST
+  value: test87398
+- name: APP
+  value: app-demo-4578974
+
+stages:
+# ********************************************
+- stage: PrepInfra
+  jobs:
+  - job: One
+    steps:
+    - bash: echo "******** Job-1 *******"
+
+  - job: two
+  # --- Dependednt on Job ID ==> one 
+    dependsOn: One
+    steps:
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'Dev'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'az group create -n $(RG) -l centralindia'
+
+# ***************************************
+- stage: DeployCode
+  dependsOn: PrepInfra
+  jobs:
+  - job: One
+    steps:
+    - bash: echo "******** Job-1 *******"
+
+  - job: two
+    dependsOn: One
+    steps:
+    - bash: echo "******** Job-2 *******"
+    # - task: AzureKeyVault@2
+    #   inputs:
+    #     azureSubscription: 'Dev'
+    #     KeyVaultName: 'kv8675'
+    #     SecretsFilter: '*'
+    #     RunAsPreJob: false
+    - task: AzureCLI@2
+      displayName: Create MYSQL SRV
+      inputs:
+        azureSubscription: 'Dev'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'az mysql flexible-server create --resource-group $(RG) --name $(DB-HOST) --public-access All --admin-password nooPho4ae5ooyai2 --admin-user aj'
+
+
+
+    - task: AzureCLI@2
+      displayName: Create App
+      inputs:
+        azureSubscription: Dev
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az appservice plan create -g $(RG) -n edkv2 --sku s1 -l $(REGION) --is-linux
+          az webapp up --name $(APP) --resource-group $(RG) --plan edkv2 --location $(REGION) --runtime  "PYTHON:3.12" --sku s1
+          az webapp config appsettings set --resource-group $(RG) --name $(APP) --settings "@app-settings.json"
+
