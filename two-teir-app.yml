@@ -10,6 +10,8 @@ variables:
   value: test87398
 - name: APP
   value: app-demo-4578974
+- name: REGION
+  value: centralindia
 
 stages:
 # ********************************************
