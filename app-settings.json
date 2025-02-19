@@ -2,7 +2,7 @@
     {
       "name": "MYSQL_HOST",
       "slotSetting": true,
-      "value": "test4565.mysql.database.azure.com"
+      "value": "XXXXX5.mysql.database.azure.com"
     },
     {
         "name": "MYSQL_USER",
@@ -12,7 +12,7 @@
     {
         "name": "MYSQL_PASSWORD",
         "slotSetting": true,
-        "value": "nooPho4ae5ooyai2"
+        "value": "nXXXXXX2"
     },
     {
         "name": "MYSQL_DB",
