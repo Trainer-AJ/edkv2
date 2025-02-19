@@ -50,13 +50,13 @@ stages:
     #     KeyVaultName: 'kv8675'
     #     SecretsFilter: '*'
     #     RunAsPreJob: false
-    - task: AzureCLI@2
-      displayName: Create MYSQL SRV
-      inputs:
-        azureSubscription: 'Dev'
-        scriptType: 'bash'
-        scriptLocation: 'inlineScript'
-        inlineScript: 'az mysql flexible-server create --resource-group $(RG) --name $(DB-HOST) --public-access All --admin-password nooPho4ae5ooyai2 --admin-user aj'
+    # - task: AzureCLI@2
+    #   displayName: Create MYSQL SRV
+    #   inputs:
+    #     azureSubscription: 'Dev'
+    #     scriptType: 'bash'
+    #     scriptLocation: 'inlineScript'
+    #     inlineScript: 'az mysql flexible-server create --resource-group $(RG) --name $(DB-HOST) --public-access All --admin-password nooPho4ae5ooyai2 --admin-user aj'
 
 
 
